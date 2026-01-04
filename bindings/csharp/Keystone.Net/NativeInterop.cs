@@ -1,12 +1,12 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
 namespace Keystone.Net
 {
     /// <summary>
     ///   Imported symbols for interop with keystone.dll.
     /// </summary>
-    internal class NativeInterop
+    internal static partial class NativeInterop
     {
         // This shouldn't be needed, even on Windows
         // /// <summary>
@@ -30,37 +30,81 @@ namespace Keystone.Net
 
         // [DllImport("kernel32.dll")]
         // private static extern IntPtr LoadLibrary(string dllToLoad);
-        
-        [DllImport("keystone", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ks_version" )]
-        internal static extern uint Version(ref uint major, ref uint minor);
-        
-        [DllImport("keystone", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ks_open")]
-        internal static extern KeystoneError Open(Architecture arch, int mode, ref IntPtr ks);
 
-        [DllImport("keystone", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ks_close")]
-        internal static extern KeystoneError Close(IntPtr ks);
+        // ---------------------------------------------------------------------
+        // ks_version
+        // ---------------------------------------------------------------------
+        [LibraryImport("keystone", EntryPoint = "ks_version")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        internal static partial uint Version(ref uint major, ref uint minor);
 
-        [DllImport("keystone", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ks_free")]
-        internal static extern void Free(IntPtr buffer);
+        // ---------------------------------------------------------------------
+        // ks_open
+        // ---------------------------------------------------------------------
+        [LibraryImport("keystone", EntryPoint = "ks_open")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        internal static partial KeystoneError Open(
+            Architecture arch,
+            int mode,
+            ref IntPtr ks);
 
-        [DllImport("keystone", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ks_strerror")]
-        internal static extern IntPtr ErrorToString(KeystoneError code);
-        
-        [DllImport("keystone", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ks_errno")]
-        internal static extern KeystoneError GetLastKeystoneError(IntPtr ks);
-        
-        [DllImport("keystone", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ks_arch_supported")]
-        internal static extern bool IsArchitectureSupported(Architecture arch);
+        // ---------------------------------------------------------------------
+        // ks_close
+        // ---------------------------------------------------------------------
+        [LibraryImport("keystone", EntryPoint = "ks_close")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        internal static partial KeystoneError Close(IntPtr ks);
 
-        [DllImport("keystone", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ks_option")]
-        internal static extern KeystoneError SetOption(IntPtr ks, int type, IntPtr value);
+        // ---------------------------------------------------------------------
+        // ks_free
+        // ---------------------------------------------------------------------
+        [LibraryImport("keystone", EntryPoint = "ks_free")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        internal static partial void Free(IntPtr buffer);
 
-        [DllImport("keystone", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ks_asm")]
-        internal static extern int Assemble(IntPtr ks, 
-            [MarshalAs(UnmanagedType.LPStr)] string toEncode, 
-            ulong baseAddress, 
+        // ---------------------------------------------------------------------
+        // ks_strerror
+        // ---------------------------------------------------------------------
+        [LibraryImport("keystone", EntryPoint = "ks_strerror")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        internal static partial IntPtr ErrorToString(KeystoneError code);
+
+        // ---------------------------------------------------------------------
+        // ks_errno
+        // ---------------------------------------------------------------------
+        [LibraryImport("keystone", EntryPoint = "ks_errno")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        internal static partial KeystoneError GetLastKeystoneError(IntPtr ks);
+
+        // ---------------------------------------------------------------------
+        // ks_arch_supported
+        // ---------------------------------------------------------------------
+        [LibraryImport("keystone", EntryPoint = "ks_arch_supported")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        [return: MarshalAs(UnmanagedType.I1)] // bool from C
+        internal static partial bool IsArchitectureSupported(Architecture arch);
+
+        // ---------------------------------------------------------------------
+        // ks_option
+        // ---------------------------------------------------------------------
+        [LibraryImport("keystone", EntryPoint = "ks_option")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        internal static partial KeystoneError SetOption(
+            IntPtr ks,
+            int type,
+            IntPtr value);
+
+        // ---------------------------------------------------------------------
+        // ks_asm
+        // ---------------------------------------------------------------------
+        [LibraryImport("keystone", EntryPoint = "ks_asm", StringMarshalling = StringMarshalling.Utf8)]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        internal static partial int Assemble(
+            IntPtr ks,
+            string toEncode,
+            ulong baseAddress,
             out IntPtr encoding,
-            out uint size, 
+            out uint size,
             out uint statements);
     }
 }
