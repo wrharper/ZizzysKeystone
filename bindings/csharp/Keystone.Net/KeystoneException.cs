@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace Keystone
+namespace Keystone.Net
 {
     /// <summary>
     ///   Represents an error encountered while encoding one or more instructions.

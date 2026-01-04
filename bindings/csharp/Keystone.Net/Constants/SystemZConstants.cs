@@ -1,5 +1,5 @@
 // For Keystone Engine. AUTO-GENERATED FILE, DO NOT EDIT [systemzConstants.cs]
-namespace Keystone
+namespace Keystone.Net
 {
 	public enum SystemzError : short
 	{

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Keystone.Net;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace Keystone
+namespace Keystone.Net
 {
     /// <summary>
     ///   Represents a Keystone engine.

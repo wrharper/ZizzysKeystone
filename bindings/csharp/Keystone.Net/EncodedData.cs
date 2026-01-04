@@ -1,4 +1,4 @@
-﻿namespace Keystone
+﻿namespace Keystone.Net
 {
     /// <summary>
     /// Defines an encoded instruction or group of instructions.

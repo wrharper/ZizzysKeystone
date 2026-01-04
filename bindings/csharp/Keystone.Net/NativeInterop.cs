@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Keystone
+namespace Keystone.Net
 {
     /// <summary>
     ///   Imported symbols for interop with keystone.dll.
